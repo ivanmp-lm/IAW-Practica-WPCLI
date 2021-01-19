@@ -53,3 +53,5 @@ mysql -u root <<< "FLUSH PRIVILEGES;"
 # Crear archivo de configuración de Wordpress
 wp config create --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --allow-root
 
+# Instalar Wordpress utilizando la aplicación wp
+wp core install --url=localhost --title="Ivan_Practica_WPCLI" --admin_user=admin --admin_password=admin123 --admin_email=ivan@admin.com --allow-root
