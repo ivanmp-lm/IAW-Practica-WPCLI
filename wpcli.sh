@@ -18,9 +18,38 @@ IP_MYSQL_SERVER=localhost
 # Actualizar los repositorios
 apt update
 
-# Descargar archivo de instalación de WP-CLI
+# Instalar servidor Apache
+apt install apache2 -y
+
+# Instalar servidor MySQL
+apt install mysql-server -y
+
+# Instalar módulos PHP
+apt install php libapache2-mod-php php-mysql -y
+
+# Reiniciar servidor Apache
+systemctl restart apache2
+
+# Copiar el archivo info.php a la carpeta de la página web
+cp info.php /var/www/html
+
+# Descargar ejecutable de WP-CLI
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
-# Asignar permisos de ejecución y mover el archivo a la ruta correspondiente
+# Asignar permisos de ejecución y mover y renombrar el archivo a la ruta correspondiente
 chmod +x wp-cli.phar
 sudo mv wp-cli.phar /usr/local/bin/wp
+
+# Descargar código fuente de Wordpress en español utilizando la herramienta WP
+wp core download --path=/var/www/html --locale=es_ES --allow-root
+
+# Crear la base de datos y usuario para conectarse a Wordpress
+mysql -u root <<< "DROP DATABASE IF EXISTS $DB_NAME;"
+mysql -u root <<< "CREATE DATABASE $DB_NAME;"
+mysql -u root <<< "CREATE USER $DB_USER@$IP_PRIVADA_FRONTEND IDENTIFIED BY '$DB_PASSWORD';"
+mysql -u root <<< "GRANT ALL PRIVILEGES ON $DB_NAME.* TO $DB_USER@$IP_PRIVADA_FRONTEND;"
+mysql -u root <<< "FLUSH PRIVILEGES;"
+
+# Crear archivo de configuración de Wordpress
+wp config create --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --allow-root
+
