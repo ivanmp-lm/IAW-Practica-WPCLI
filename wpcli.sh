@@ -11,6 +11,7 @@ DB_USER=wordpress_user
 DB_PASSWORD=wordpress_password
 IP_PRIVADA_FRONTEND=localhost
 IP_MYSQL_SERVER=localhost
+WP_URL=107.22.52.178
 #-----------------------------------------
 # Variables de configuración
 # ---------------------------------------
@@ -40,8 +41,10 @@ curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.pha
 chmod +x wp-cli.phar
 sudo mv wp-cli.phar /usr/local/bin/wp
 
-# Descargar código fuente de Wordpress en español utilizando la herramienta WP
-wp core download --path=/var/www/html --locale=es_ES --allow-root
+# Descargar el código fuente de Wordpress en español utilizando la herramienta WP
+cd /var/www/html
+mv index.html index.htmll
+wp core download --locale=es_ES --allow-root
 
 # Crear la base de datos y usuario para conectarse a Wordpress
 mysql -u root <<< "DROP DATABASE IF EXISTS $DB_NAME;"
@@ -54,17 +57,17 @@ mysql -u root <<< "FLUSH PRIVILEGES;"
 wp config create --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --allow-root
 
 # Instalar Wordpress utilizando la aplicación wp
-wp core install --url=localhost --title="Ivan_Practica_WPCLI" --admin_user=admin --admin_password=admin123 --admin_email=ivan@admin.com --allow-root
+wp core install --url=$WP_URL --title="Ivan_Practica_WPCLI" --admin_user=admin --admin_password=admin123 --admin_email=ivan@admin.com --allow-root
 
 # ---------------------------------------
 # Configuración adicional de Wordpress
 # ---------------------------------------
 
 # Actualizar todos los plugins a la última versión
-wp plugin update --all
+wp plugin update --all --allow-root
 
 # Actualizar todos los temas
-wp theme update --all
+wp theme update --all --allow-root
 
 # Actualizar la versión de Wordpress
-wp core update
+wp core update --allow-root
