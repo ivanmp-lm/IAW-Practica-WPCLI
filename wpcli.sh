@@ -71,3 +71,7 @@ wp theme update --all --allow-root
 
 # Actualizar la versión de Wordpress
 wp core update --allow-root
+
+# Cambiar permisos de la carpeta WP-Content después de actualizar
+chmod -R 775 wp-content
+chown -R www-data:www-data *
