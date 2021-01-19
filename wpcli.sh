@@ -55,3 +55,16 @@ wp config create --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --all
 
 # Instalar Wordpress utilizando la aplicación wp
 wp core install --url=localhost --title="Ivan_Practica_WPCLI" --admin_user=admin --admin_password=admin123 --admin_email=ivan@admin.com --allow-root
+
+# ---------------------------------------
+# Configuración adicional de Wordpress
+# ---------------------------------------
+
+# Actualizar todos los plugins a la última versión
+wp plugin update --all
+
+# Actualizar todos los temas
+wp theme update --all
+
+# Actualizar la versión de Wordpress
+wp core update
